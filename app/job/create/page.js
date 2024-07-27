@@ -1,3 +1,4 @@
+"use client"
 import { useState } from 'react';
 
 const JobForm = () => {
@@ -19,11 +20,13 @@ const JobForm = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    const token = localStorage.getItem('token');
     try {
       const response = await fetch('/api/jobs', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
+          'Authorization': `Bearer ${token}`
         },
         body: JSON.stringify(jobData),
       });

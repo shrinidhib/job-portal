@@ -38,6 +38,12 @@ const JobSchema = new mongoose.Schema({
     type: Date,
     default: Date.now,
   },
+  postedBy: { 
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'User', 
+    required: true
+  }, 
+  applications: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Application' }],
 });
 
 const Job = mongoose.models.Job || mongoose.model('Job', JobSchema);

@@ -23,7 +23,7 @@ export async function POST(request) {
     await connectToDatabase();
     const body = await request.json()
     console.log(body)
-    const newJob = new Job(body)
+    const newJob = new Job({...body,postedBy : request.user.userId})
     console.log(newJob)
     await newJob.save()
     return new Response(JSON.stringify(newJob), { status: 201 }); 
