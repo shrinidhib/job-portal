@@ -44,6 +44,7 @@ const JobSchema = new mongoose.Schema({
     required: true
   }, 
   applications: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Application' }],
+  shortlistedCandidates: [{ type: mongoose.Schema.Types.ObjectId, ref: 'User' }],
 });
 
 const Job = mongoose.models.Job || mongoose.model('Job', JobSchema);

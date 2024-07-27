@@ -23,7 +23,7 @@ const LoginPage = () => {
         const { token, userId } = await res.json();
         localStorage.setItem('token', token); 
         localStorage.setItem('userId', userId); 
-        router.push('/dashboard'); 
+        router.push('/'); 
       } else {
         console.error('Login failed');
       }
