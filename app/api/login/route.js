@@ -19,8 +19,8 @@ export async function POST(request) {
       return new Response(JSON.stringify({ error: 'Invalid credentials' }), { status: 400 });
     }
     const token = jwt.sign({ userId: user._id, role: user.role }, process.env.JWT_SECRET, { expiresIn: '3d' });
-
-    return new Response(JSON.stringify({ token }), { status: 200 });
+    const id = user._id
+    return new Response(JSON.stringify({ userId: id, token }), { status: 200 });
   } catch (error) {
     console.error(error);
     return new Response(JSON.stringify({ error: 'Error logging in' }), { status: 500 });
