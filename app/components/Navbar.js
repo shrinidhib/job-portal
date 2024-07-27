@@ -4,13 +4,14 @@ import { useUser } from "../context/UserContext";
 const NavBar = () => {
   const { user } = useUser();
 
+
   return (
     <div className="space-x-4">
       <a href="/" className="hover:underline">Jobs</a>
       {user ? (
         <>
           <a href="/profile" className="hover:underline">Profile</a>
-          <a href="/logout" className="hover:underline">Logout</a>
+         
         </>
       ) : (
         <>
