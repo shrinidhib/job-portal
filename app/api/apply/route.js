@@ -19,7 +19,7 @@ export async function POST(request) {
 
     if (resume && resume instanceof File) {
       const uniqueFilename = crypto.randomBytes(16).toString('hex') + path.extname(resume.name);
-      const resumePath = path.join(process.cwd(), 'uploads', uniqueFilename);
+      const resumePath = path.join(process.cwd(), 'public/uploads', uniqueFilename);
 
       const uploadDir = path.dirname(resumePath);
       if (!fs.existsSync(uploadDir)) {
@@ -50,7 +50,7 @@ export async function POST(request) {
         applicantEmail: formData.get('applicantEmail'),
         applicantID : request.user.userId,
         phoneNumber: formData.get('phoneNumber'),
-        resume: resumePath, 
+        resume: uniqueFilename, 
         coverLetter: formData.get('coverLetter'),
       });
 

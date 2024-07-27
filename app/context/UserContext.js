@@ -7,9 +7,9 @@ export function UserProvider({ children }) {
   const [user, setUser] = useState(null);
 
   useEffect(() => {
-    const userFromStorage = localStorage.getItem('user');
+    const userFromStorage = localStorage.getItem('userId');
     if (userFromStorage) {
-      setUser(JSON.parse(userFromStorage));
+      setUser(userFromStorage);
     }
   }, []);
 

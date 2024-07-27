@@ -26,7 +26,7 @@ export async function POST(request) {
     );
 
     return new Response(
-      JSON.stringify({ userId: newUser._id, token }),
+      JSON.stringify({ userId: newUser._id, token , role: newUser.role}),
       { status: 201 }
     );
   } catch (error) {
