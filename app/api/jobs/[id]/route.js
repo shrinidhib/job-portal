@@ -26,10 +26,11 @@ export async function PUT(request, { params }) {
     job.salary = salary;
     job.duration = duration;
     job.jobType = jobType;
-
+    console.log(job)
     await job.save();
+    const jobDetails = await job.populate('applications')
 
-    return new NextResponse(JSON.stringify(job), { status: 200 });
+    return new NextResponse(JSON.stringify(jobDetails), { status: 200 });
   } catch (error) {
     console.log(error);
     return new NextResponse(JSON.stringify({ error: 'Error updating job' }), { status: 500 });

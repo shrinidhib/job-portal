@@ -8,7 +8,8 @@ export function UserProvider({ children }) {
 
   useEffect(() => {
     const userFromStorage ={userId: localStorage.getItem('userId'), role: localStorage.getItem('role')};
-    if (userFromStorage) {
+    console.log(userFromStorage)
+    if (userFromStorage.userId) {
       setUser(userFromStorage);
     }
   }, []);

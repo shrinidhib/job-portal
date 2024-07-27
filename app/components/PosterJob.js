@@ -3,7 +3,7 @@ import { useState } from "react";
 
 const PosterJob=({application, jobId})=>{
     const [shortlisted, setShortlisted] = useState(false); 
-    
+    console.log(application, jobId)
     async function handleShortlist(jobId, candidateId) {
         
         const token = localStorage.getItem('token');
