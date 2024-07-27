@@ -7,7 +7,7 @@ export function UserProvider({ children }) {
   const [user, setUser] = useState(null);
 
   useEffect(() => {
-    const userFromStorage = localStorage.getItem('userId');
+    const userFromStorage ={userId: localStorage.getItem('userId'), role: localStorage.getItem('role')};
     if (userFromStorage) {
       setUser(userFromStorage);
     }

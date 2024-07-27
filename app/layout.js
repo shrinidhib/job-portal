@@ -24,7 +24,7 @@ export default function RootLayout({ children }) {
           <nav className="container mx-auto flex justify-between items-center">
             <div className="text-xl font-bold">Job Portal</div>
             
-              <NavBar/>
+            <NavBar/>
             
           </nav>
         </header>

@@ -27,10 +27,11 @@ const RegisterPage = () => {
       if (res.ok) {
         const response = await res.json();
         console.log(response);
-        const { token, userId } = response;
-        setUser(userId);
+        const { token, userId , role} = response;
+        setUser({userId, role});
         localStorage.setItem('token', token); 
         localStorage.setItem('userId', userId); 
+        localStorage.setItem('role', role); 
         router.push('/'); 
       } else {
         const { error } = await res.json();

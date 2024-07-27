@@ -1,17 +1,28 @@
 "use client"
+import { useRouter } from "next/navigation";
 import { useUser } from "../context/UserContext";
 
 const NavBar = () => {
-  const { user } = useUser();
-
+  const { user ,setUser} = useUser();
+  const router = useRouter()
+    const handleLogout=()=>{
+        localStorage.removeItem('userId')
+        localStorage.removeItem('token')
+        localStorage.removeItem('role')
+        setUser(null)
+        router.push('/')
+    }
 
   return (
-    <div className="space-x-4">
+    <div className="space-x-4 flex gap-2">
       <a href="/" className="hover:underline">Jobs</a>
       {user ? (
         <>
-          <a href="/profile" className="hover:underline">Profile</a>
-         
+          <a href="/job/myjobs" className="hover:underline">My Jobs</a>
+          {user.role == 'poster'?(
+            <a href="/job/create" className="hover:underline">Post Job</a>
+          ):null}
+          <p className="hover:underline" onClick={handleLogout}>Logout</p>
         </>
       ) : (
         <>

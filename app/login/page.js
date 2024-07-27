@@ -22,10 +22,11 @@ const LoginPage = () => {
       });
 
       if (res.ok) {
-        const { token, userId } = await res.json();
-        setUser(userId);
+        const { token, userId, role } = await res.json();
+        setUser({userId, role});
         localStorage.setItem('token', token); 
         localStorage.setItem('userId', userId); 
+        localStorage.setItem('role', role); 
         router.push('/'); 
       } else {
         console.error('Login failed');
