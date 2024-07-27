@@ -1,6 +1,7 @@
 "use client";
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
+import { useUser } from '../context/UserContext';
 
 const RegisterPage = () => {
   const [name, setName] = useState('');
@@ -9,6 +10,7 @@ const RegisterPage = () => {
   const [role, setRole] = useState('browser'); 
   const [error,setError]=useState('')
   const router = useRouter();
+  const {user, setUser}=useUser()
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -26,9 +28,10 @@ const RegisterPage = () => {
         const response = await res.json()
         console.log(response)
         const { token, userId } = response;
-        localStorage.setItem('token', token); // Store the token
-        localStorage.setItem('userId', userId); // Store the user ID
-        router.push('/'); // Redirect to the dashboard or another page
+        setUser(userId)
+        localStorage.setItem('token', token); 
+        localStorage.setItem('userId', userId); 
+        router.push('/'); 
       } else {
         const {error} = await res.json()
         setError(error)

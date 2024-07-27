@@ -1,3 +1,4 @@
+"use client"
 import { createContext, useContext, useState, useEffect } from 'react';
 
 const UserContext = createContext(null);
@@ -19,7 +20,11 @@ export function UserProvider({ children }) {
   );
 }
 
-// Custom hook to use user context
 export function useUser() {
-  return useContext(UserContext);
-}
+    const context = useContext(UserContext);
+    if (context === undefined) {
+      throw new Error('useUser must be used within a JobProvider');
+    }
+    return context;
+  }
+

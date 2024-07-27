@@ -1,11 +1,14 @@
 "use client";
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
+import { useUser } from '../context/UserContext';
 
 const LoginPage = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const router = useRouter();
+  const {user, setUser} = useUser()
+  
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -21,6 +24,7 @@ const LoginPage = () => {
 
       if (res.ok) {
         const { token, userId } = await res.json();
+        setUser(userId)
         localStorage.setItem('token', token); 
         localStorage.setItem('userId', userId); 
         router.push('/'); 
