@@ -6,6 +6,7 @@ import { connectToDatabase } from '../database/database';
 import Application from '@/app/models/Application';
 import { authenticate } from '@/app/middleware/auth';
 import crypto from 'crypto';
+import Job from '@/app/models/Job';
 
 export async function POST(request) {
   try {
@@ -42,17 +43,25 @@ export async function POST(request) {
       });
 
       console.log(`File saved to: ${resumePath}`);
-
+      
       const newApplication = new Application({
         jobId: formData.get('jobId'),
         applicantName: formData.get('applicantName'),
         applicantEmail: formData.get('applicantEmail'),
+        applicantID : request.user.userId,
         phoneNumber: formData.get('phoneNumber'),
         resume: resumePath, 
         coverLetter: formData.get('coverLetter'),
       });
 
-      await newApplication.save();
+      const savedApplication = await newApplication.save();
+
+      // Add the new application's ID to the job's applications array
+      await Job.findByIdAndUpdate(
+        formData.get('jobId'),
+        { $push: { applications: savedApplication._id } },
+        { new: true, useFindAndModify: false }
+      );
 
       const transporter = nodemailer.createTransport({
         service: 'Gmail',

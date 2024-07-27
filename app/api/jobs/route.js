@@ -2,8 +2,7 @@ import Job from '@/app/models/Job';
 import { connectToDatabase } from '../database/database';
 import { authenticate } from '@/app/middleware/auth';
 import { authorizeRole } from '@/app/middleware/role';
-
-
+import mongoose from 'mongoose';
 
 export async function GET() {
   try {
@@ -22,8 +21,9 @@ export async function POST(request) {
     console.log(1)
     await connectToDatabase();
     const body = await request.json()
-    console.log(body)
-    const newJob = new Job({...body,postedBy : request.user.userId})
+    console.log(body, request.user.userId)
+    const nj = {...body, creator: request.user.userId}
+    const newJob = new Job(nj)
     console.log(newJob)
     await newJob.save()
     return new Response(JSON.stringify(newJob), { status: 201 }); 

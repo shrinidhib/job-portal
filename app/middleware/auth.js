@@ -1,6 +1,7 @@
 import jwt from 'jsonwebtoken';
 
 export async function authenticate(request) {
+  console.log(request.headers)
   const token = request.headers.get('Authorization')?.split(' ')[1];
   console.log("in auth",token)
   if (!token) {
