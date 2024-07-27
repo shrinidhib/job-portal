@@ -4,7 +4,9 @@ dotenv.config();
 const nextConfig = {
     env: {
         MONGO_URI: process.env.MONGO_URI,
-        JWT_SECRET : process.env.JWT_SECRET 
+        JWT_SECRET : process.env.JWT_SECRET ,
+        EMAIL : process.env.EMAIL,
+        PASS: process.env.PASS
       },
 };
 
