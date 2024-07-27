@@ -1,7 +1,5 @@
 import mongoose from 'mongoose';
 
-const MONGODB_URI = process.env.MONGO_URI;
-
 let cachedClient = null;
 let cachedDb = null;
 
@@ -11,7 +9,7 @@ export async function connectToDatabase() {
   }
 
   try {
-    const client = await mongoose.connect(MONGODB_URI, {
+    const client = await mongoose.connect(process.env.MONGO_URI, {
       useNewUrlParser: true,
       useUnifiedTopology: true,
     });
