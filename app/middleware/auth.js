@@ -1,8 +1,8 @@
 import jwt from 'jsonwebtoken';
 
 export async function authenticate(request) {
-  const token = request.headers.authorization?.split(' ')[1];
-
+  const token = request.headers.get('Authorization')?.split(' ')[1];
+  console.log("in auth",token)
   if (!token) {
     throw new Error('No token provided');
   }
@@ -10,6 +10,7 @@ export async function authenticate(request) {
   try {
     const decoded = jwt.verify(token, process.env.JWT_SECRET);
     request.user = decoded;
+    console.log(request.user)
   } catch (error) {
     throw new Error('Invalid token');
   }

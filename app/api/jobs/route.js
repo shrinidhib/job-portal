@@ -19,7 +19,7 @@ export async function POST(request) {
   try {
     await authenticate(request)
     authorizeRole('poster')(request)
-    
+    console.log(1)
     await connectToDatabase();
     const body = await request.json()
     console.log(body)

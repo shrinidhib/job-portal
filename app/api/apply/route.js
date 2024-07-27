@@ -1,55 +1,85 @@
-// app/api/apply/route.js
 import { NextResponse } from 'next/server';
-import Application from '@/app/models/Application';
-import fs from 'fs'
+import fs from 'fs';
+import path from 'path';
 import nodemailer from 'nodemailer';
 import { connectToDatabase } from '../database/database';
-import upload from '@/app/utils/multer';
-import path from 'path';
+import Application from '@/app/models/Application';
+import { authenticate } from '@/app/middleware/auth';
+import crypto from 'crypto';
 
 export async function POST(request) {
   try {
     await connectToDatabase();
-    const formData = await request.json();
+    await authenticate(request);
+
+    const formData = await request.formData();
     const resume = formData.get('resume');
+    console.log(resume)
 
-    const resumePath = path.join(process.cwd(), 'uploads', resume.filename)
-    const fileStream = fs.createWriteStream(resumePath)
-    resume.stream.pipe(fileStream)
+    if (resume && resume instanceof File) {
+      const uniqueFilename = crypto.randomBytes(16).toString('hex') + path.extname(resume.name);
+      const resumePath = path.join(process.cwd(), 'uploads', uniqueFilename);
 
-    const newApplication = new Application({
+      const uploadDir = path.dirname(resumePath);
+      if (!fs.existsSync(uploadDir)) {
+        fs.mkdirSync(uploadDir, { recursive: true });
+      }
+      const fileStream = fs.createWriteStream(resumePath);
+      const reader = resume.stream().getReader();
+
+      reader.read().then(async function processText({ done, value }) {
+        if (done) {
+          fileStream.end();
+          return;
+        }
+        fileStream.write(value);
+        reader.read().then(processText);
+      });
+
+      await new Promise((resolve, reject) => {
+        fileStream.on('finish', resolve);
+        fileStream.on('error', reject);
+      });
+
+      console.log(`File saved to: ${resumePath}`);
+
+      const newApplication = new Application({
         jobId: formData.get('jobId'),
         applicantName: formData.get('applicantName'),
         applicantEmail: formData.get('applicantEmail'),
         phoneNumber: formData.get('phoneNumber'),
-        resume: resumePath,
-        coverLetter: formData.get('coverLetter')
-    });
-    await newApplication.save();
+        resume: resumePath, 
+        coverLetter: formData.get('coverLetter'),
+      });
 
-    
-    const transporter = nodemailer.createTransport({
-        service: "Gmail",
-        host: "smtp.gmail.com",
+      await newApplication.save();
+
+      const transporter = nodemailer.createTransport({
+        service: 'Gmail',
+        host: 'smtp.gmail.com',
         port: 465,
         secure: true,
         auth: {
           user: process.env.EMAIL,
-          pass: process.ENV.PASS,
+          pass: process.env.PASS,
         },
       });
 
-    const mailOptions = {
-      from: process.env.EMAIL_USER,
-      to: body.applicantEmail,
-      subject: 'Job Application Confirmation',
-      text: `Dear ${body.applicantName},\n\nThank you for applying to the job. We have received your application and will get back to you shortly.\n\nBest regards,\nThe Team`,
-    };
+      const mailOptions = {
+        from: process.env.EMAIL,
+        to: formData.get('applicantEmail'),
+        subject: 'Job Application Confirmation',
+        text: `Dear ${formData.get('applicantName')},\n\nThank you for applying to the job. We have received your application and will get back to you shortly.\n\nBest regards,\nThe Team`,
+      };
 
-    await transporter.sendMail(mailOptions);
+      await transporter.sendMail(mailOptions);
 
-    return NextResponse.json({ message: 'Application submitted successfully!' }, { status: 201 });
+      return NextResponse.json({ message: 'Application submitted successfully!' }, { status: 201 });
+    } else {
+      return NextResponse.json({ error: 'Resume file is required!' }, { status: 400 });
+    }
   } catch (error) {
+    console.log(error);
     return NextResponse.json({ error: 'Error submitting application!' }, { status: 500 });
   }
 }

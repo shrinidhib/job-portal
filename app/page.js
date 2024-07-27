@@ -1,15 +1,45 @@
-import JobList from '../components/JobList';
+"use client";
+import { useEffect, useState } from 'react';
+import Link from 'next/link';
+import { useJob } from './context/JobContext';
 
 const HomePage = () => {
-  const jobs = [
-    { id: 1, title: 'Frontend Developer', company: 'ABC Corp', description: 'Work on web applications' },
-    { id: 2, title: 'Backend Developer', company: 'XYZ Inc', description: 'Build server-side logic' },
-  ];
+  const { jobs, setJobs, setSelectedJob } = useJob();
+
+  useEffect(() => {
+    const fetchJobs = async () => {
+      try {
+        const response = await fetch('/api/jobs');
+        if (response.ok) {
+          const data = await response.json();
+          setJobs(data);
+        } else {
+          console.error('Error fetching jobs:', response.statusText);
+        }
+      } catch (error) {
+        console.error('Error fetching jobs:', error);
+      }
+    };
+
+    fetchJobs();
+  }, []);
+
+  const handleViewDetails = (job) => {
+    setSelectedJob(job);
+  };
 
   return (
     <div>
-      <h1>Job Openings</h1>
-      <JobList jobs={jobs} />
+      {jobs.map(job => (
+        <div key={job._id}>
+          <h2>{job.title}</h2>
+          <p>{job.company}</p>
+          <p>{job.description}</p>
+          <Link href={`/job/${job._id}`} onClick={() => handleViewDetails(job)}>
+            View Details
+          </Link>
+        </div>
+      ))}
     </div>
   );
 };

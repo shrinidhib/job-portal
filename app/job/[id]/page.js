@@ -1,19 +1,23 @@
-"use client"
+"use client";
+import Link from 'next/link';
+import { useJob } from '../../context/JobContext';
+import { useRouter } from 'next/navigation';
 
-import Link from "next/link";
-
-
-
-const JobDetails = ({id}) => {
-  
-  const job = { id, title: 'Frontend Developer', company: 'ABC Corp', description: 'Full job description here...' };
+const JobDetails = ({params}) => {
+  const { selectedJob } = useJob();
+  const {id}=params
+  console.log(selectedJob)
+  console.log(id)
+  if (!selectedJob || selectedJob._id !== id) {
+    return <div>Loading...</div>;
+  }
 
   return (
     <div>
-      <h1>{job.title}</h1>
-      <p>{job.company}</p>
-      <p>{job.description}</p>
-      <Link href='/apply'>
+      <h1>{selectedJob.title}</h1>
+      <p>{selectedJob.company}</p>
+      <p>{selectedJob.description}</p>
+      <Link href={`/apply/${selectedJob._id}`}>
         Apply now!
       </Link>
     </div>

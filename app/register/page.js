@@ -7,6 +7,7 @@ const RegisterPage = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [role, setRole] = useState('browser'); 
+  const [error,setError]=useState('')
   const router = useRouter();
 
   const handleSubmit = async (e) => {
@@ -22,11 +23,15 @@ const RegisterPage = () => {
       });
 
       if (res.ok) {
-        const { token, userId } = await res.json();
+        const response = await res.json()
+        console.log(response)
+        const { token, userId } = response;
         localStorage.setItem('token', token); // Store the token
         localStorage.setItem('userId', userId); // Store the user ID
-        router.push('/dashboard'); // Redirect to the dashboard or another page
+        router.push('/'); // Redirect to the dashboard or another page
       } else {
+        const {error} = await res.json()
+        setError(error)
         console.error('Registration failed');
       }
     } catch (error) {
@@ -58,6 +63,7 @@ const RegisterPage = () => {
           </select>
         </label>
         <button type="submit">Register</button>
+        {error && <div>{error}</div>}
       </form>
     </div>
   );
