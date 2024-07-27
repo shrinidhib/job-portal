@@ -1,5 +1,7 @@
 import Job from '@/app/models/Job';
 import { connectToDatabase } from '../database/database';
+import { authenticate } from '@/app/middleware/auth';
+import { authorizeRole } from '@/app/middleware/role';
 
 
 
@@ -15,6 +17,9 @@ export async function GET() {
 
 export async function POST(request) {
   try {
+    await authenticate(request)
+    authorizeRole('poster')(request)
+    
     await connectToDatabase();
     const body = await request.json()
     console.log(body)
