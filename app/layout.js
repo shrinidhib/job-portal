@@ -11,7 +11,14 @@ export const metadata = {
 export default function RootLayout({ children }) {
   return (
     <html lang="en">
-      <body className={inter.className}>{children}</body>
+      <head>
+        <title>Job Portal</title>
+      </head>
+      <body>
+        <header>My Job Portal</header>
+        <main>{children}</main>
+        <footer>Footer Content</footer>
+      </body>
     </html>
   );
 }
