@@ -37,7 +37,14 @@ const HomePage = () => {
             <div key={job._id} className="bg-white shadow-lg rounded-lg p-6 hover:shadow-xl transition-shadow duration-300 ease-in-out">
               <h2 className="text-2xl font-semibold text-gray-800">{job.title}</h2>
               <p className="text-lg font-medium text-gray-600 mt-2">{job.company}</p>
-              <p className="text-gray-700 mt-4">{job.description}</p>
+              <p className="text-gray-700 mt-4">{job.description.slice(0, 100)}...</p>
+              <div className="mt-4 flex flex-wrap gap-2">
+                {job.requirements.map((requirement, index) => (
+                  <span key={index} className="bg-gray-200 text-gray-700 text-xs font-semibold px-2.5 py-0.5 rounded-full">
+                    {requirement}
+                  </span>
+                ))}
+              </div>
               <Link href={`/job/${job._id}`} onClick={() => handleViewDetails(job)} 
                   className="mt-4 inline-block px-4 py-2 rounded-lg bg-blue-500 text-white font-medium hover:bg-blue-600 transition-colors duration-300"
                 >

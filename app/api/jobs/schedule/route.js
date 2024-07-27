@@ -1,7 +1,7 @@
 import { NextResponse } from 'next/server';
 
 import Job from '@/app/models/Job';
-
+import User from '@/app/models/User';
 import nodemailer from 'nodemailer';
 import { authenticate } from '@/app/middleware/auth';
 import { authorizeRole } from '@/app/middleware/role';
@@ -13,9 +13,12 @@ export async function POST(request) {
     authorizeRole('poster')(request);
 
     const { jobId, candidateId, interviewDateTime } = await request.json();
+    console.log(jobId, candidateId, interviewDateTime)
     await connectToDatabase();
-
+    const j = await Job.findById(jobId)  
+    console.log(j)  
     const job = await Job.findById(jobId).populate('shortlistedCandidates');
+    console.log(job)
     if (!job) {
       return new NextResponse(JSON.stringify({ error: 'Job not found' }), { status: 404 });
     }

@@ -56,7 +56,6 @@ export async function POST(request) {
 
       const savedApplication = await newApplication.save();
 
-      // Add the new application's ID to the job's applications array
       await Job.findByIdAndUpdate(
         formData.get('jobId'),
         { $push: { applications: savedApplication._id } },

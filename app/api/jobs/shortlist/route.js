@@ -17,7 +17,6 @@ export async function POST(request) {
       return new NextResponse(JSON.stringify({ error: 'Job not found' }), { status: 404 });
     }
 
-    // Add candidate to shortlist
     job.shortlistedCandidates.push(candidateId);
     await job.save();
 
