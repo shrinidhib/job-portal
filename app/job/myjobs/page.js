@@ -80,7 +80,7 @@ const JobsPage = () => {
             <ul className="mt-4 space-y-4">
               {job.applications.length > 0 ? (
                 job.applications.map((application) => (
-                  <PosterJob key={application._id} application={application} jobId={job._id}/>
+                  <PosterJob key={application._id} application={application} jobId={job._id} job={job}/>
                 ))
               ) : (
                 <p className="text-gray-600">No applications yet.</p>

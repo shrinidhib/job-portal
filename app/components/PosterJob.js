@@ -1,9 +1,17 @@
 "use client"
 import { useState } from "react";
 
-const PosterJob=({application, jobId})=>{
+const PosterJob=({application, jobId, job})=>{
+    
     const [shortlisted, setShortlisted] = useState(false); 
-    console.log(application, jobId)
+    console.log(job)
+    useEffect(() => {
+        // Check if the application is in the shortlisted applications
+        if (job && job.shortlisted) {
+          const isShortlisted = job.shortlistedCandidates.includes(application.applicantID);
+          setShortlisted(isShortlisted);
+        }
+      }, [job, application]);
     async function handleShortlist(jobId, candidateId) {
         
         const token = localStorage.getItem('token');

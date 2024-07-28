@@ -1,4 +1,5 @@
 "use client";
+import { useRouter } from 'next/navigation';
 import { useState } from 'react';
 
 const JobForm = () => {
@@ -14,7 +15,7 @@ const JobForm = () => {
   });
 
   const [requirementsArray, setRequirementsArray] = useState([]);
-
+  const router = useRouter()
   const handleChange = (e) => {
     const { name, value } = e.target;
     setJobData({ ...jobData, [name]: value });
@@ -51,6 +52,7 @@ const JobForm = () => {
       });
       const result = await response.json();
       console.log('Job posted:', result);
+      router.push('/')
     } catch (error) {
       console.error('Error posting job:', error);
     }

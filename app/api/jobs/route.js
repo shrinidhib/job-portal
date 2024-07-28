@@ -5,14 +5,15 @@ import { authorizeRole } from '@/app/middleware/role';
 import mongoose from 'mongoose';
 
 export async function GET() {
-  try {
-    await connectToDatabase();
-    const jobs = await Job.find({})
-    return new Response(JSON.stringify(jobs), { status: 200 });
-  } catch (error) {
-    return new Response(JSON.stringify({ error: "Error fetching jobs!" }), { status: 500 })
+    try {
+      await connectToDatabase();
+      const jobs = await Job.find({}).sort({ postedDate: -1 });
+      return new Response(JSON.stringify(jobs), { status: 200 });
+    } catch (error) {
+      return new Response(JSON.stringify({ error: "Error fetching jobs!" }), { status: 500 });
+    }
   }
-}
+  
 
 export async function POST(request) {
   try {

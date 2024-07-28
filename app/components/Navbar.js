@@ -19,8 +19,10 @@ const NavBar = () => {
     <div className="space-x-4 flex gap-2">
       <Link href="/" className="hover:underline">Jobs</Link>
       {user ? (
-        <>
-          <Link href="/job/myjobs" className="hover:underline">My Jobs</Link>
+        <>  
+        {user.role==='poster' ? <Link href="/job/myjobs" className="hover:underline">My Jobs</Link>
+        :<Link href="/job/myapplications" className="hover:underline">My Applications</Link>}
+          
           {user.role === 'poster' && (
             <Link href="/job/create" className="hover:underline">Post Job</Link>
           )}

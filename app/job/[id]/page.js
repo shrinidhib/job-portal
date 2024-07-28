@@ -2,14 +2,35 @@
 import Link from 'next/link';
 import { useJob } from '../../context/JobContext';
 import { useRouter } from 'next/navigation';
+import { useEffect, useState } from 'react';
 
 const JobDetails = ({ params }) => {
-  const { selectedJob } = useJob();
+  const { selectedJob, setSelectedJob } = useJob();
   const { id } = params;
   const router = useRouter();
+  const [hasApplied, setHasApplied] = useState(false);
+  const [loading, setLoading] = useState(true);
+    console.log(selectedJob)
+  useEffect(() => {
+    if (selectedJob && selectedJob._id === id) {
+      const token = localStorage.getItem('userId');
+      if (token && selectedJob.applications) {
+        const applied = selectedJob.applications.includes(token);
+        setHasApplied(applied);
+        setLoading(false);
+        console.log(applied)
+      }
+    } else {
+      setLoading(true);
+    }
+  }, [selectedJob, id]);
+
+  if (loading) {
+    return <div className="text-center text-gray-600">Loading...</div>;
+  }
 
   if (!selectedJob || selectedJob._id !== id) {
-    return <div className="text-center text-gray-600">Loading...</div>;
+    return <div className="text-center text-gray-600">Job not found.</div>;
   }
 
   const { title, company, description, requirements, location, salary, duration, jobType, postedDate } = selectedJob;
@@ -40,9 +61,15 @@ const JobDetails = ({ params }) => {
         </div>
 
         <div className="mt-6 flex gap-4">
-          <Link href={`/apply/${id}`} className="inline-block px-6 py-3 bg-blue-500 text-white rounded-lg shadow hover:bg-blue-600 transition">
-            Apply now!
-          </Link>
+          {hasApplied ? (
+            <button className="inline-block px-6 py-3 bg-gray-500 text-white rounded-lg shadow cursor-not-allowed">
+              Already Applied
+            </button>
+          ) : (
+            <Link href={`/apply/${id}`} className="inline-block px-6 py-3 bg-blue-500 text-white rounded-lg shadow hover:bg-blue-600 transition">
+              Apply now!
+            </Link>
+          )}
           <button
             onClick={() => router.back()}
             className="inline-block px-6 py-3 bg-gray-500 text-white rounded-lg shadow hover:bg-gray-600 transition"

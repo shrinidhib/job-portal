@@ -56,7 +56,7 @@ export async function POST(request) {
 
       const savedApplication = await newApplication.save();
 
-      await Job.findByIdAndUpdate(
+      const j = await Job.findByIdAndUpdate(
         formData.get('jobId'),
         { $push: { applications: savedApplication._id } },
         { new: true, useFindAndModify: false }
@@ -77,7 +77,7 @@ export async function POST(request) {
         from: process.env.EMAIL,
         to: formData.get('applicantEmail'),
         subject: 'Job Application Confirmation',
-        text: `Dear ${formData.get('applicantName')},\n\nThank you for applying to the job. We have received your application and will get back to you shortly.\n\nBest regards,\nThe Team`,
+        text: `Dear ${formData.get('applicantName')},\n\nThank you for applying to the job. We have received your application and will get back to you shortly.\n\nBest regards,\n ${j.companyName}`,
       };
 
       await transporter.sendMail(mailOptions);
@@ -91,3 +91,19 @@ export async function POST(request) {
     return NextResponse.json({ error: 'Error submitting application!' }, { status: 500 });
   }
 }
+
+export async function GET(request) {
+    await authenticate(request)
+    const userId = request.user.userId
+    console.log("in applications")
+    try {
+      await connectToDatabase(); 
+      const applications = await Application.find({ applicantID: userId }).populate('jobId', 'title description location salary duration jobType requirements'); 
+  
+        console.log(applications)
+      return NextResponse.json({applications}, { status: 201 });
+    } catch (error) {
+      console.error(error);
+      return NextResponse.json({ error: 'Error fetching applications' }, { status: 500 });
+    }
+  }
