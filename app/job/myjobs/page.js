@@ -7,7 +7,12 @@ const JobsPage = () => {
   const [jobs, setJobs] = useState([]);
   const [selectedJob, setSelectedJob] = useState(null); 
   const [isModalOpen, setIsModalOpen] = useState(false);
-
+  const convertToHTML = (text) => {
+    return text
+      .replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>') // Bold
+      .replace(/\*(.*?)\*/g, '<em>$1</em>') // Italic
+      .replace(/\n/g, '<br />'); // Line breaks
+  };
   useEffect(() => {
     const fetchJobs = async () => {
       const token = localStorage.getItem('token');
@@ -65,7 +70,7 @@ const JobsPage = () => {
         jobs.map((job) => (
           <div key={job._id} className="bg-white shadow-lg rounded-lg p-6 mb-6">
             <h2 className="text-2xl font-semibold text-gray-700">{job.title}</h2>
-            <p className="text-gray-600 mt-2">{job.description}</p>
+            <div className="text-gray-600 mt-2" dangerouslySetInnerHTML={{ __html: convertToHTML(job.description) }} />
             <p className="text-gray-700 mt-4">Location: {job.location}</p>
             <p className="text-gray-700">Salary: ${job.salary}</p>
             <p className="text-gray-700">Duration: {job.duration}</p>

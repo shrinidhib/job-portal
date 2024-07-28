@@ -10,15 +10,23 @@ const JobDetails = ({ params }) => {
   const router = useRouter();
   const [hasApplied, setHasApplied] = useState(false);
   const [loading, setLoading] = useState(true);
-    console.log(selectedJob)
+  const convertToHTML = (text) => {
+    return text
+      .replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>') // Bold
+      .replace(/\*(.*?)\*/g, '<em>$1</em>') // Italic
+      .replace(/\n/g, '<br />'); // Line breaks
+  };
   useEffect(() => {
     if (selectedJob && selectedJob._id === id) {
-      const token = localStorage.getItem('userId');
-      if (token && selectedJob.applications) {
-        const applied = selectedJob.applications.includes(token);
+      const userId = localStorage.getItem('userId');
+      if (userId && selectedJob.applications) {
+        const applied = selectedJob.applications.some(app => app.applicantID === userId);
         setHasApplied(applied);
         setLoading(false);
-        console.log(applied)
+      }
+      if (!userId){
+        alert("Please Login/Register first!")
+        router.push('/login')
       }
     } else {
       setLoading(true);
@@ -40,7 +48,7 @@ const JobDetails = ({ params }) => {
       <div className="bg-white shadow-lg rounded-lg p-6 max-w-4xl mx-auto">
         <h1 className="text-4xl font-bold text-gray-800">{title}</h1>
         <p className="text-xl font-semibold text-gray-700 mt-2">{company}</p>
-        <p className="text-gray-600 mt-2">{description}</p>
+        <div className="text-gray-600 mt-2" dangerouslySetInnerHTML={{ __html: convertToHTML(description) }} />
 
         <div className="mt-6">
           <h2 className="text-2xl font-semibold text-gray-800">Job Details:</h2>

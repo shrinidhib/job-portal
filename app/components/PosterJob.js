@@ -1,17 +1,10 @@
 "use client"
-import { useState } from "react";
+import { useState , useEffect} from "react";
 
 const PosterJob=({application, jobId, job})=>{
     
-    const [shortlisted, setShortlisted] = useState(false); 
-    console.log(job)
-    useEffect(() => {
-        // Check if the application is in the shortlisted applications
-        if (job && job.shortlisted) {
-          const isShortlisted = job.shortlistedCandidates.includes(application.applicantID);
-          setShortlisted(isShortlisted);
-        }
-      }, [job, application]);
+    const [shortlisted, setShortlisted] = useState(job.shortlistedCandidates.includes(application.applicantID)); 
+    
     async function handleShortlist(jobId, candidateId) {
         
         const token = localStorage.getItem('token');
@@ -65,12 +58,19 @@ const PosterJob=({application, jobId, job})=>{
         <p>No resume available</p>
       )}
     </div>
-    <button
-      onClick={() => handleShortlist(jobId, application.applicantID)}
-      className={`mt-4 py-2 px-4 rounded-lg ${shortlisted ? 'bg-green-500 text-white' : 'bg-blue-500 text-white'} hover:bg-opacity-90`}
-    >
-      {shortlisted? 'Shortlisted' : 'Shortlist'}
-    </button>
+    {!shortlisted ? (
+        <button
+          onClick={() => handleShortlist(jobId, application.applicantID)}
+          className="mt-4 py-2 px-4 rounded-lg bg-blue-500 text-white hover:bg-opacity-90"
+        >
+          Shortlist
+        </button>
+      ):(
+        <p className="mt-4 py-2 px-4 rounded-lg bg-green-500 text-white text-center">
+          Shortlisted
+        </p>
+      )}
+      
     {shortlisted && (
       <form
         onSubmit={(e) => {

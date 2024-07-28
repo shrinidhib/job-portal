@@ -77,7 +77,7 @@ export async function POST(request) {
         from: process.env.EMAIL,
         to: formData.get('applicantEmail'),
         subject: 'Job Application Confirmation',
-        text: `Dear ${formData.get('applicantName')},\n\nThank you for applying to the job. We have received your application and will get back to you shortly.\n\nBest regards,\n ${j.companyName}`,
+        text: `Dear ${formData.get('applicantName')},\n\nThank you for applying to the job. We have received your application and will get back to you shortly.\n\nBest regards,\n ${j.company}`,
       };
 
       await transporter.sendMail(mailOptions);

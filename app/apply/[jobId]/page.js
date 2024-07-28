@@ -1,4 +1,5 @@
 "use client";
+import { useRouter } from 'next/navigation';
 import { useState } from 'react';
 
 const Apply = ({ params }) => {
@@ -20,6 +21,7 @@ const Apply = ({ params }) => {
       setFormData({ ...formData, [name]: value });
     }
   };
+  const router = useRouter()
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -45,6 +47,7 @@ const Apply = ({ params }) => {
 
       if (response.ok) {
         alert('Application submitted successfully!');
+        router.push('/job/myapplications')
       } else {
         alert('Error submitting application.');
       }

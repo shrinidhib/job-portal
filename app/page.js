@@ -80,7 +80,7 @@ const HomePage = () => {
             <div key={job._id} className="bg-white shadow-lg rounded-lg p-6 hover:shadow-xl transition-shadow duration-300 ease-in-out">
               <h2 className="text-2xl font-semibold text-gray-800">{job.title}</h2>
               <p className="text-lg font-medium text-gray-600 mt-2">{job.company}</p>
-              <p className="text-gray-700 mt-4">{job.description.slice(0, 100)}...</p>
+              <p className="text-gray-700 mt-4">{job.description.slice(0, 30)}...</p>
               <div className="mt-4">
                 <p className="text-gray-600">Posted on: {formatDate(job.postedDate)}</p>
               </div>
