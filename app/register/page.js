@@ -26,7 +26,7 @@ const RegisterPage = () => {
 
       if (res.ok) {
         const response = await res.json();
-        console.log(response);
+       
         const { token, userId , role} = response;
         setUser({userId, role});
         localStorage.setItem('token', token); 

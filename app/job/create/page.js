@@ -77,7 +77,7 @@ const JobForm = () => {
         body: JSON.stringify(jobPayload),
       });
       const result = await response.json();
-      console.log('Job posted:', result);
+      
       router.push('/');
     } catch (error) {
       console.error('Error posting job:', error);

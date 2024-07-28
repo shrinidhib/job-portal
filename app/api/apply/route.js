@@ -15,7 +15,7 @@ export async function POST(request) {
 
     const formData = await request.formData();
     const resume = formData.get('resume');
-    console.log(resume)
+   
 
     if (resume && resume instanceof File) {
       const uniqueFilename = crypto.randomBytes(16).toString('hex') + path.extname(resume.name);
@@ -95,12 +95,12 @@ export async function POST(request) {
 export async function GET(request) {
     await authenticate(request)
     const userId = request.user.userId
-    console.log("in applications")
+   
     try {
       await connectToDatabase(); 
       const applications = await Application.find({ applicantID: userId }).populate('jobId', 'title description location salary duration jobType requirements'); 
   
-        console.log(applications)
+    
       return NextResponse.json({applications}, { status: 201 });
     } catch (error) {
       console.error(error);

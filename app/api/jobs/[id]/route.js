@@ -26,7 +26,7 @@ export async function PUT(request, { params }) {
     job.salary = salary;
     job.duration = duration;
     job.jobType = jobType;
-    console.log(job)
+   
     await job.save();
     const jobDetails = await job.populate('applications')
 

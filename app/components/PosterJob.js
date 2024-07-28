@@ -19,7 +19,7 @@ const PosterJob=({application, jobId, job})=>{
     
         if (response.ok) {
           const result = await response.json();
-          setShortlisted(true); // Update shortlisted status per job
+          setShortlisted(true);
           alert(result.message || result.error);
         }
       }

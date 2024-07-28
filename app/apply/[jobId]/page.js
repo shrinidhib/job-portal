@@ -27,13 +27,13 @@ const Apply = ({ params }) => {
     e.preventDefault();
     const token = localStorage.getItem('token');
 
-    // Create a FormData object to handle file uploads
+   
     const data = new FormData();
     data.append('jobId', jobId);
     data.append('applicantName', formData.applicantName);
     data.append('applicantEmail', formData.applicantEmail);
     data.append('phoneNumber', formData.phoneNumber);
-    data.append('resume', formData.resume); // File upload
+    data.append('resume', formData.resume); 
     data.append('coverLetter', formData.coverLetter);
 
     try {

@@ -9,7 +9,7 @@ export async function authenticate(request) {
   try {
     const decoded = jwt.verify(token, process.env.JWT_SECRET);
     request.user = decoded;
-    console.log(request.user)
+
   } catch (error) {
     throw new Error('Invalid token');
   }

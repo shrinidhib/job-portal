@@ -80,7 +80,7 @@ export async function POST(request) {
 
     // Create Zoom meeting
     const zoomMeeting = await createZoomMeeting(accessToken, interviewDateTime);
-    console.log(zoomMeeting)
+   
     // Send interview email with Zoom meeting details
     const transporter = nodemailer.createTransport({
       service: 'Gmail',

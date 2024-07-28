@@ -14,8 +14,7 @@ const EditJobModal = ({ job, onClose, onUpdate }) => {
     applications: job.applications,
     shortlistedCandidates: job.shortlistedCandidates,
   });
-  console.log(formData)
-  console.log(job.applications)
+  
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -34,13 +33,13 @@ const EditJobModal = ({ job, onClose, onUpdate }) => {
         },
         body: JSON.stringify({
           ...formData,
-          requirements: formData.requirements.split(',').map(req => req.trim()), // Convert string back to array
+          requirements: formData.requirements.split(',').map(req => req.trim()), 
         }),
       });
 
       if (response.ok) {
         const updatedJob = await response.json();
-        console.log(updatedJob)
+        
         onUpdate(updatedJob);
       } else {
         alert('Error updating job');

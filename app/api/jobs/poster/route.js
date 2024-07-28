@@ -12,9 +12,9 @@ export async function GET(request) {
     await connectToDatabase();
     
     const userId = request.user.userId;
-    console.log(userId)
+   
     const j = await Job.find({ creator: userId })
-    console.log(j)
+    
     const jobs = await Job.find({ creator: userId }).populate('applications');
     
     return NextResponse.json({ jobs });

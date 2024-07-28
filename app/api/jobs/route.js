@@ -21,13 +21,13 @@ export async function POST(request) {
   try {
     await authenticate(request)
     authorizeRole('poster')(request)
-    console.log(1)
+   
     await connectToDatabase();
     const body = await request.json()
-    console.log(body, request.user.userId)
+   
     const nj = {...body, creator: request.user.userId}
     const newJob = new Job(nj)
-    console.log(newJob)
+   
     await newJob.save()
     return new Response(JSON.stringify(newJob), { status: 201 }); 
   } catch (error) {

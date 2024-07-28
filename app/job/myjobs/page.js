@@ -51,7 +51,7 @@ const JobsPage = () => {
       });
 
       if (response.ok) {
-        setJobs(jobs.filter(job => job._id !== jobId)); // Remove deleted job from state
+        setJobs(jobs.filter(job => job._id !== jobId));  
         alert('Job deleted successfully');
       } else {
         console.error('Error deleting job:', response.statusText);
